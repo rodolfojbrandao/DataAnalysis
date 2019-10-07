@@ -6,38 +6,41 @@ from matplotlib import pyplot as plt
 import cv2
 import statistics
 
-path='/home/rodolfo/Desktop/imagens_processadas_R1_v1_ma'
+path='/home/rodolfo/Desktop/imagens'
 #path='/home/rodolfo/Desktop/imagens_processadas'
 
 os.chdir(path)
 
-NF =  562   #numero de files
+NF_0 = 541
+NF_f =  560   #numero de files
 cel = 400
-fao = []
-dp4 = []
-dp3 = []
-media = []
+number= NF_f-NF_0
+fao = n.zeros(number)
+dp4 = n.zeros(number)
+media = n.zeros(number)
 dados = []
 
 #separacao dos dados
-for s in range (495,NF):
+for s in range (NF_0,NF_f):
   img = plt.imread("imagem.{}.jpg".format(s))
   RGB_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
   plt.axis("off")
   imagem = RGB_img[:,:,1]
-  #print(s*100/NF)
 
   #determinando fracao de area ocupada
   cont_pt=0
   cont_bt=0
+
   for i in range (0,(imagem.shape[0])-1): #linhas
     for j in range (0,(imagem.shape[1])-1):  #colunas
         if imagem[i,j]<50:
             cont_pt=cont_pt+1
         if imagem[i,j]>200:
             cont_bt=cont_bt+1
+
   cont_b_p=cont_pt+cont_bt
-  fao.append(cont_pt/(cont_b_p))
+  fao[s]=(cont_pt/(cont_b_p))
+  print(s * 100 / NF)
 
   #determinando concentração de pixel preto por celula
   contador1 = np.zeros((cel))
