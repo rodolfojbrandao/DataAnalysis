@@ -2,11 +2,11 @@ import os
 import numpy as np
 import pandas as pd
 
-NF = 601 #number of files
+NF = 600 #number of files
 
 colCounter = np.zeros((NF,1))
 
-path='/home/lablinux/Desktop/post_paraviewPP'
+path='/home/rodolfo/Desktop/15102019/colForcePW'
 os.chdir(path)
 
 for j in range (0,NF):
