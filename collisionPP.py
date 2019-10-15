@@ -6,11 +6,11 @@ import math
 
 N = 4   #number of cores
 a = list(range(N))
-NF = 601
+NF = 600
 forceTotal = np.zeros((NF,1))
 colCounter = np.zeros((NF,1))
 
-path = '/home/lablinux/simulacoes/PCC2/OPT_NCt/3-4pol/colForcePP'
+path = '/home/rodolfo/Desktop/15102019/colForcePP'
 os.chdir(path)
 result = 0
 
@@ -22,10 +22,6 @@ def f(a):
     for j in range(inicio,fim):
         filenumber = j
         data = pd.read_csv('PP.{}.csv'.format(filenumber))
-        #velocity1 = data.iloc[:,0:3]
-        #velocity1.to_csv('velocity1.{}.csv'.format(filenumber))
-        #velocity2 = data.iloc[:,3:6]
-        #velocity2.to_csv('velocity2.{}.csv'.format(filenumber))
         force = data.iloc[:,8:11]
         force.to_csv('force.{}.csv'.format(filenumber))
 
@@ -65,4 +61,4 @@ for j in range (0,NF):
 colCounter = pd.DataFrame(colCounter)
 colCounter.to_csv('1-Number_of_Collisions_PP.csv')
 forceTotal = pd.DataFrame(forceTotal)
-forceTotal.to_csv('2-AverageForce.csv')
+forceTotal.to_csv('2-AverageForce_PP.csv')
