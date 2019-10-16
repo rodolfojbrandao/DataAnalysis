@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import math
 from pandas import DataFrame
+import time
+start = time.time()
 
-NF = 489 #number of files
-NP = 7261 #number of particles
+NF = 100 #number of files
+NP = 7382#number of particles
 r1 = 0.003
 r2 = 0.003
 v1=(4/3*math.pi*r1*r1*r1)
@@ -30,7 +32,7 @@ Volume = pd.DataFrame(np.zeros((tamanho,NF)))
 
 posicao_vetor = 1
 
-path='/media/rodolfo/5A0819190818F5AB/Doutorado/numerico/CasosMisturados/07c/dados'
+path='/home/rodolfo/Desktop/dados'
 os.chdir(path)
 
 for j in range (0,NF):
@@ -76,7 +78,7 @@ for m in range(0,NF):
         else:
             contador_tipo2.iloc[posicao_vetor, m] = contador_tipo2.iloc[posicao_vetor, m] + 1
 Volume = contador_tipo1*v1/v*100+contador_tipo2*v2/v*100
-#print(Area)
+
 for n in range(0, len(Volume)):
     if Volume.iloc[n,NF-1]>5:
         cout1.append((contador_tipo1.iloc[n,:]*v1)/((contador_tipo1.iloc[n,:]*v1)+(contador_tipo2.iloc[n,:]*v2)))
@@ -84,3 +86,6 @@ for n in range(0, len(Volume)):
 cout1=pd.DataFrame(cout1)
 indice=pd.DataFrame(cout1.std())
 indice.to_csv('dados07c.csv')
+
+end = time.time()
+print(end - start)
