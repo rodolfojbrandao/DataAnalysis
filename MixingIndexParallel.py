@@ -13,21 +13,16 @@ r1 = 0.003
 r2 = 0.003
 v1=(4/3*math.pi*r1*r1*r1)
 v2=(4/3*math.pi*r2*r2*r2)
+ReadInput=[]
+CellCountInput=[]
 
-path='/home/rodolfo/Desktop/dados'
+path='/home/rb/Desktop/dados'
 os.chdir(path)
 
 #Read input list ==================================
-ReadInput = [
-[NF,NP,N,0],
-[NF,NP,N,1],
-[NF,NP,N,2],
-[NF,NP,N,3],
-[NF,NP,N,4],
-[NF,NP,N,5],
-[NF,NP,N,6],
-[NF,NP,N,7],
-]
+for i in range (N):
+	ReadInput.append([NF,NP,N,i])
+
 if __name__=='__main__':
     Tarefas=len(ReadInput)
     with Pool(Tarefas) as p:
@@ -39,16 +34,9 @@ posicaoZ=res[2]
 Tipo=res[3]
 
 #CellCount Input list ===============================
-CellCountInput = [
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,0,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,1,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,2,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,3,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,4,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,5,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,6,N],
-[posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,7,N],
-]
+for i in range (N):
+	CellCountInput.append([posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,i,N])
+
 if __name__=='__main__':
     Tarefas=len(CellCountInput)
     with Pool(Tarefas) as p:
