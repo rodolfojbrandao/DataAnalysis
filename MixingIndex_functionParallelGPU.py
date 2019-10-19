@@ -1,37 +1,53 @@
 import pandas as pd
 import numpy as np
 import math
-import cudf as cd #GPU capabilities
-import cupy as cp #GPU capabilities
+import cupy
+import cudf
+import numba
 
-def ReadFile(NF,NP,N):
-    posicaoX = cp.zeros((NP, NF))
-    posicaoY = cp.zeros((NP, NF))
-    posicaoZ = cp.zeros((NP, NF))
-    Tipo = cp.zeros((NP, NF))
-    for j in range (0,NF):
-        Dados = cd.read_csv('dados.{}.csv'.format(j))
-        Tipo[:, j] = Dados.iloc[:, 1].copy()
+
+def ReadFile(ReadInput):
+    NF=ReadInput[0]
+    NP=ReadInput[1]
+    N=ReadInput[2]
+    a=ReadInput[3]
+    posicaoX = np.zeros((NP, NF))
+    posicaoY = np.zeros((NP, NF))
+    posicaoZ = np.zeros((NP, NF))
+    Tipo = np.zeros((NP, NF))
+    inicio = int(a * NF / N)
+    fim = int((a + 1) * NF / N)
+    for j in range (inicio,fim):
+        Dados = pd.read_csv('dados.{}.csv'.format(j))
+        Tipo[:, j] = Dados.iloc[:, 1]
         posicaoX[:, j] = Dados.iloc[:, 3].copy()
         posicaoY[:, j] = Dados.iloc[:, 4].copy()
         posicaoZ[:, j] = Dados.iloc[:, 5].copy()
-
-    posicaoX=cd.DataFrame(posicaoX)
-    posicaoY=cd.DataFrame(posicaoY)
-    posicaoZ=cd.DataFrame(posicaoZ)
-    Tipo=cd.DataFrame(Tipo)
+    posicaoX=pd.DataFrame(posicaoX)
+    posicaoY=pd.DataFrame(posicaoY)
+    posicaoZ=pd.DataFrame(posicaoZ)
+    Tipo=pd.DataFrame(Tipo)
     return posicaoX, posicaoY, posicaoZ, Tipo
 
 
-def CellCount(posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,N):
+def CellCount(CellCountInput):
+    posicaoX=CellCountInput[0]
+    posicaoY=CellCountInput[1]
+    posicaoZ=CellCountInput[2]
+    Tipo=CellCountInput[3]
+    v1=CellCountInput[4]
+    v2=CellCountInput[5]
+    NF=CellCountInput[6]
+    a=CellCountInput[7]
+    N=CellCountInput[8]
     v = 0.03 * 0.03 * 0.03
     rx = 5
     ry = 5
     rz = 10
     tamanho = rx * ry * rz - 1
-    contador_tipo1 = cd.DataFrame(cp.zeros((tamanho, NF)))
-    contador_tipo2 = cd.DataFrame(cp.zeros((tamanho, NF)))
-    Volume = cd.DataFrame(cp.zeros((tamanho, NF)))
+    contador_tipo1 = pd.DataFrame(np.zeros((tamanho, NF)))
+    contador_tipo2 = pd.DataFrame(np.zeros((tamanho, NF)))
+    Volume = pd.DataFrame(np.zeros((tamanho, NF)))
     posicao_vetor = 1
     max_x = float(posicaoX.iloc[:,[1]].max())
     max_y = float(posicaoY.iloc[:,[1]].max())
@@ -45,7 +61,9 @@ def CellCount(posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,N):
     InferiorX=float(posicaoX.iloc[:,[1]].min())
     InferiorY=float(posicaoY.iloc[:,[1]].min())
     InferiorZ=float(posicaoZ.iloc[:,[1]].min())
-    for m in range(0, NF):
+    inicio = int(a * NF / N)
+    fim = int((a + 1) * NF / N)
+    for m in range(inicio, fim):
         p = 0
         q = 0,
         concluido = m / NF * 100
@@ -64,13 +82,10 @@ def CellCount(posicaoX, posicaoY, posicaoZ,Tipo,v1,v2,NF,N):
     return Volume, contador_tipo1, contador_tipo2
 
 
-def GenerateFile(Volume, contador_tipo1, contador_tipo2,v1,v2,NF,N):
+def GenerateFile(Volume, contador_tipo1, contador_tipo2,v1,v2,NF):
     cout1 = list()
     for n in range(0, len(Volume)):
         if Volume.iloc[n, NF - 1] > 5:
             cout1.append((contador_tipo1.iloc[n, :] * v1) / (
                         (contador_tipo1.iloc[n, :] * v1) + (contador_tipo2.iloc[n, :] * v2)))
     return cout1
-
-
-
