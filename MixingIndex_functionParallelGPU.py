@@ -1,20 +1,17 @@
 import pandas as pd
 import numpy as np
 import math
-import cupy
-import cudf
-import numba
-
+import cupy as cp
 
 def ReadFile(ReadInput):
     NF=ReadInput[0]
     NP=ReadInput[1]
     N=ReadInput[2]
     a=ReadInput[3]
-    posicaoX = np.zeros((NP, NF))
-    posicaoY = np.zeros((NP, NF))
-    posicaoZ = np.zeros((NP, NF))
-    Tipo = np.zeros((NP, NF))
+    posicaoX = cp.zeros((NP, NF))
+    posicaoY = cp.zeros((NP, NF))
+    posicaoZ = cp.zeros((NP, NF))
+    Tipo = cp.zeros((NP, NF))
     inicio = int(a * NF / N)
     fim = int((a + 1) * NF / N)
     for j in range (inicio,fim):
@@ -45,9 +42,9 @@ def CellCount(CellCountInput):
     ry = 5
     rz = 10
     tamanho = rx * ry * rz - 1
-    contador_tipo1 = pd.DataFrame(np.zeros((tamanho, NF)))
-    contador_tipo2 = pd.DataFrame(np.zeros((tamanho, NF)))
-    Volume = pd.DataFrame(np.zeros((tamanho, NF)))
+    contador_tipo1 = pd.DataFrame(cp.zeros((tamanho, NF)))
+    contador_tipo2 = pd.DataFrame(cp.zeros((tamanho, NF)))
+    Volume = pd.DataFrame(cp.zeros((tamanho, NF)))
     posicao_vetor = 1
     max_x = float(posicaoX.iloc[:,[1]].max())
     max_y = float(posicaoY.iloc[:,[1]].max())
