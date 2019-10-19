@@ -6,7 +6,7 @@ from pandas import DataFrame
 from MixingIndex_functionParallel import ReadFile, CellCount, GenerateFile
 from multiprocessing import Pool
 
-N=8
+N=24
 NF = 100 #number of files
 NP = 7382 #number of particles
 r1 = 0.003
@@ -16,7 +16,7 @@ v2=(4/3*math.pi*r2*r2*r2)
 ReadInput=[]
 CellCountInput=[]
 
-path='/home/rb/Desktop/dados'
+path='/home/rodolfo/Desktop/dados'
 os.chdir(path)
 
 #Read input list ==================================
