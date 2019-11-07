@@ -3,8 +3,9 @@ import numpy as np
 import pandas as pd
 import math
 from pandas import DataFrame
-from MixingIndex_functionParallel import ReadFile, CellCount, GenerateFile
+from MixingIndex_functionParallelGPU import ReadFile, CellCount, GenerateFile
 from multiprocessing import Pool
+import cupy as cp
 
 N=24
 NF = 400 #number of files
