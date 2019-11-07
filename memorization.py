@@ -8,6 +8,7 @@ def fib_memo(n):
         return 1
     memo[n] = fib_memo(n-1) + fib_memo(n-2)
     return memo[n]
+
 result= fib_memo(n)
 print(result)
 print(memo)
